@@ -10,38 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_07_144557) do
+ActiveRecord::Schema.define(version: 2023_06_08_094506) do
 
   create_table "appointments", force: :cascade do |t|
     t.integer "user_id"
-    t.string "workout"
-    t.datetime "date"
-    t.string "duration"
     t.integer "trainer_id"
+    t.string "exercises"
+    t.string "duration"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "exercises"
     t.index ["trainer_id"], name: "index_appointments_on_trainer_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 
-  create_table "exercises", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.string "category"
-    t.integer "trainer_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["trainer_id"], name: "index_exercises_on_trainer_id"
-  end
-
   create_table "reviews", force: :cascade do |t|
     t.integer "user_id"
-    t.text "content"
+    t.integer "trainer_id"
+    t.text "review"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "trainer_id"
-    t.string "review"
     t.index ["trainer_id"], name: "index_reviews_on_trainer_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
@@ -49,29 +36,19 @@ ActiveRecord::Schema.define(version: 2023_06_07_144557) do
   create_table "trainers", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "title"
-    t.string "specialization"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "email"
-    t.string "password_digest"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "email"
-    t.string "password_digest"
-    t.integer "trainer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["trainer_id"], name: "index_users_on_trainer_id"
   end
 
   add_foreign_key "appointments", "trainers"
   add_foreign_key "appointments", "users"
-  add_foreign_key "exercises", "trainers"
   add_foreign_key "reviews", "trainers"
   add_foreign_key "reviews", "users"
-  add_foreign_key "users", "trainers"
 end
