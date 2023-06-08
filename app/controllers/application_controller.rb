@@ -6,6 +6,12 @@ class ApplicationController < Sinatra::Base
     { WELCOME: "Your Fitness Buddy" }.to_json
   end
   
+  # Users routes
+  get '/users' do
+    users = User.all
+    users.to_json
+  end
+
   # Appointments routes
   get '/appointments' do
     appointments = Appointment.all
@@ -17,9 +23,9 @@ class ApplicationController < Sinatra::Base
     appointment.to_json
   end
   
-  post '/appointments' do
-    appointment = Appointment.create(params)
-    appointment.to_json
+  get '/appointments' do
+    appointments = Appointment.all
+    appointments.to_json(include: [:user, :trainer])
   end
 
   patch '/appointments/:id' do
