@@ -1,15 +1,32 @@
 class ApplicationController < Sinatra::Base
-  set :default_content_type, "application/json"
+  set :default_content_type, 'application/json'
 
   # Root route
   get '/' do
-    { WELCOME: "Your Fitness Buddy" }.to_json
+    { WELCOME: 'Your Fitness Buddy' }.to_json
   end
-  
+
   # Users routes
   get '/users' do
     users = User.all
     users.to_json
+  end
+
+  post '/users' do
+    user = User.create(params)
+    user.to_json
+  end
+
+  put '/users/:id' do
+    user = User.find(params[:id])
+    user.update(params)
+    user.to_json
+  end
+
+  delete '/users/:id' do
+    user = User.find(params[:id])
+    user.destroy
+    { message: 'User deleted successfully' }.to_json
   end
 
   # Appointments routes
@@ -18,17 +35,12 @@ class ApplicationController < Sinatra::Base
     appointments.to_json
   end
 
-  get '/appointments/:id' do
-    appointment = Appointment.find(params[:id])
+  post '/appointments' do
+    appointment = Appointment.create(params)
     appointment.to_json
   end
-  
-  get '/appointments' do
-    appointments = Appointment.all
-    appointments.to_json(include: [:user, :trainer])
-  end
 
-  patch '/appointments/:id' do
+  put '/appointments/:id' do
     appointment = Appointment.find(params[:id])
     appointment.update(params)
     appointment.to_json
@@ -37,9 +49,9 @@ class ApplicationController < Sinatra::Base
   delete '/appointments/:id' do
     appointment = Appointment.find(params[:id])
     appointment.destroy
-    { message: "Appointment deleted successfully" }.to_json
+    { message: 'Appointment deleted successfully' }.to_json
   end
-  
+
   # Reviews routes
   get '/reviews' do
     reviews = Review.all
@@ -50,13 +62,13 @@ class ApplicationController < Sinatra::Base
     review = Review.find(params[:id])
     review.to_json
   end
-  
+
   post '/reviews' do
     review = Review.create(params)
     review.to_json
   end
 
-  patch '/reviews/:id' do
+  put '/reviews/:id' do
     review = Review.find(params[:id])
     review.update(params)
     review.to_json
@@ -65,6 +77,6 @@ class ApplicationController < Sinatra::Base
   delete '/reviews/:id' do
     review = Review.find(params[:id])
     review.destroy
-    { message: "Review deleted successfully" }.to_json
+    { message: 'Review deleted successfully' }.to_json
   end
 end
